@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.2.xsd 
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-4.2.xsd
+	http://www.springframework.org/schema/task 
+	http://www.springframework.org/schema/task/spring-task-4.2.xsd
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+	http://www.springframework.org/schema/tx
+	https://www.springframework.org/schema/tx/spring-tx.xsd
+">
+	<bean id="shiroFilter"
+		class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager"></property>
+		<property name="loginUrl" value="/toLogin.do" />
+		<property name="successUrl" value="/index.do" />
+		<property name="unauthorizedUrl" value="/toLogin.do" />
+		<property name="filterChainDefinitions">
+			<value>
+				/toLogin = anon
+				/toLogin.do = anon
+				/login = anon
+				/login.do = anon
+				/logout = logout
+				/logout.do = logout
+				/css/** = anon
+				/js/** = anon
+				/imgs/** = anon
+				/** = authc
+			</value>
+		</property>
+	</bean>
+
+	<bean id="securityManager"
+		class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="uCanRealm"></property>
+		<property name="sessionManager" ref="sessionManager"></property>
+		<property name="cacheManager" ref="ehCacheManager"></property>
+	</bean>
+
+	<!-- shiro native session管理器 -->
+	<bean id="sessionManager"
+		class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+		<property name="sessionDAO" ref="shiroSessionDao" />
+		<property name="sessionValidationScheduler"
+			ref="shiroSessionValidationScheduler" />
+		<property name="deleteInvalidSessions" value="true" />
+		<property name="sessionIdCookieEnabled" value="true" />
+		<property name="sessionListeners">
+			<list>
+				<ref bean="shiroSessionListener" />
+			</list>
+		</property>
+		<property name="globalSessionTimeout" value="3600000" />
+		<property name="sessionIdCookie" ref="sessionIdCookie" />
+	</bean>
+
+	<!-- session监听器，监听session的创建、销毁和过期 -->
+	<bean id="shiroSessionListener"
+		class="com.ucan.shiro.listener.ShiroSessionListener"></bean>
+
+	<!-- sessionDAO 处理session存储问题 -->
+	<bean id="shiroSessionDao"
+		class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">
+		<property name="activeSessionsCacheName"
+			value="shiroActiveSessions" />
+	</bean>
+
+	<!-- session缓存管理器，这里使用Ehcache -->
+	<bean id="ehCacheManager"
+		class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManager">
+			<ref bean="ehcacheManagerFactory" />
+		</property>
+	</bean>
+
+	<!-- shiro session 状态（检查）校验调度器，基于jdk的ExecutorService实现 -->
+	<bean id="shiroSessionValidationScheduler"
+		class="org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler">
+		<!-- 1小时检查一次session状态 -->
+		<property name="interval" value="3600000"></property>
+	</bean>
+
+	<!--配置会话cookie模板 -->
+	<bean id="sessionIdCookie"
+		class="org.apache.shiro.web.servlet.SimpleCookie">
+		<constructor-arg name="name" value="shiro.session" />
+		<property name="maxAge" value="-1" />
+		<property name="httpOnly" value="true" />
+	</bean>
+
+	<bean id="uCanRealm" class="com.ucan.shiro.UCanRealm">
+		<property name="cachingEnabled" value="true" />
+		<property name="authorizationCachingEnabled" value="true" />
+		<property name="authorizationCacheName"
+			value="shiroAuthzCache" />
+	</bean>
+
+	<bean id="lifecycleBeanPostProcessor"
+		class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+</beans>
