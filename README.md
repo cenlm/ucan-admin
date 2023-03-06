@@ -48,12 +48,12 @@ cross_permission: 跨权限<br>
 7.  maven
 
 #### 效果图
-![Image text](https://gitee.com/mrcen/ucan-admin/blob/master/src/main/webapp/imgs/login-effect.png)<br>
-![Image text](https://gitee.com/mrcen/ucan-admin/blob/master/src/main/webapp/imgs/home-effect.png)<br>
-![Image text](https://gitee.com/mrcen/ucan-admin/blob/master/src/main/webapp/imgs/user-effect.png)<br>
-![Image text](https://gitee.com/mrcen/ucan-admin/blob/master/src/main/webapp/imgs/role-effect.png)<br>
-![Image text](https://gitee.com/mrcen/ucan-admin/blob/master/src/main/webapp/imgs/permission-effect.png)<br>
-![Image text](https://gitee.com/mrcen/ucan-admin/blob/master/src/main/webapp/imgs/setting-effect.png)<br>
+![Image text](https://gitee.com/mrcen/ucan-admin/raw/master/src/main/webapp/imgs/login-effect.png)<br>
+![Image text](https://gitee.com/mrcen/ucan-admin/raw/master/src/main/webapp/imgs/home-effect.png)<br>
+![Image text](https://gitee.com/mrcen/ucan-admin/raw/master/src/main/webapp/imgs/user-effect.png)<br>
+![Image text](https://gitee.com/mrcen/ucan-admin/raw/master/src/main/webapp/imgs/role-effect.png)<br>
+![Image text](https://gitee.com/mrcen/ucan-admin/raw/master/src/main/webapp/imgs/permission-effect.png)<br>
+![Image text](https://gitee.com/mrcen/ucan-admin/raw/master/src/main/webapp/imgs/setting-effect.png)<br>
 
 
 
