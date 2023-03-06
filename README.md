@@ -63,6 +63,7 @@ RBAC权限管理系统的具体业务跟具体需求有关，欢迎大家的指�
 
 
 #### 效果图
+用户名：admin  密码：123456<br>
 ![Image text](https://gitee.com/mrcen/ucan-admin/raw/master/src/main/webapp/imgs/login-effect.png)<br>
 ![Image text](https://gitee.com/mrcen/ucan-admin/raw/master/src/main/webapp/imgs/home-effect.png)<br>
 ![Image text](https://gitee.com/mrcen/ucan-admin/raw/master/src/main/webapp/imgs/user-effect.png)<br>
