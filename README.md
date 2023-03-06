@@ -14,9 +14,9 @@
 
 用户名：admin  密码：123456<br>
 
-#### 数据表结构
+#### 数据库表关系图
 
-1.数据库表结构图：<br>
+1.数据库表关系图：<br>
 ![Image text](https://gitee.com/mrcen/ucan-admin/raw/master/src/main/webapp/imgs/db-erd.png)<br>
 
 表名称说明：<br>
