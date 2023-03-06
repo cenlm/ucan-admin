@@ -12,8 +12,8 @@
 	3.2 角色分层、角色互斥、角色权限继承、角色分配、权限分配、角色用户数限制（待办）等。<br>
 4.权限管理。<br>
 
-#### 软件架构
-软件架构说明<br>
+#### 数据表结构
+
 1.数据库表结构图：<br>
 ![Image text](https://gitee.com/mrcen/ucan-admin/raw/master/src/main/webapp/imgs/db-erd.png)<br>
 
@@ -50,7 +50,7 @@ cross_permission: 跨权限<br>
 7.  Tomcat-8.5.63
 8.  Maven
 
-####待办事项
+#### 待办事项
 1.角色用户数限制。<br>
 2.权限数据动态更新。<br>
 3.优化其他细节及解决未知的问题。<br>
