@@ -40,12 +40,25 @@ cross_permission: 跨权限<br>
 
 #### 运行环境
 1.  JDK 1.8+
-2.  Spring 5.2.12.RELEASE
-3.  shiro-core 1.10.1
-4.  mysql 5.7.33
-5.  layui 2.7.6
-6.  tomcat-8.5.63
-7.  maven
+2.  Spring、SpringMvc 5.2.12.RELEASE
+3.  Mybatis-3.5.9
+4.  shiro-core 1.10.1
+5.  Mysql 5.7.33
+6.  Layui 2.7.6
+7.  Tomcat-8.5.63
+8.  Maven
+
+####待办事项
+1.角色用户数限制。<br>
+2.权限数据动态更新。<br>
+3.优化其他细节及解决未知的问题。<br>
+
+业务逻辑参考：<br>
+https://www.cnblogs.com/iceblow/p/11121362.html<br>
+https://juejin.cn/post/7121977695197970463<br>
+
+RBAC权限管理系统的具体业务跟具体需求有关，欢迎大家的指正与交流。<br>
+
 
 #### 效果图
 ![Image text](https://gitee.com/mrcen/ucan-admin/raw/master/src/main/webapp/imgs/login-effect.png)<br>
@@ -54,8 +67,6 @@ cross_permission: 跨权限<br>
 ![Image text](https://gitee.com/mrcen/ucan-admin/raw/master/src/main/webapp/imgs/role-effect.png)<br>
 ![Image text](https://gitee.com/mrcen/ucan-admin/raw/master/src/main/webapp/imgs/permission-effect.png)<br>
 ![Image text](https://gitee.com/mrcen/ucan-admin/raw/master/src/main/webapp/imgs/setting-effect.png)<br>
-
-
 
 #### 特技
 
