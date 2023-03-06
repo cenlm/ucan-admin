@@ -15,7 +15,7 @@
 #### 软件架构
 软件架构说明
 1.数据库表结构图：
-![image](https://gitee.com/mrcen/ucan-admin/blob/master/src/main/webapp/imgs/db-erd.png)
+![Image text](https://gitee.com/mrcen/ucan-admin/raw/master/src/main/webapp/imgs/db-erd.png)
 
 
 #### 安装教程
