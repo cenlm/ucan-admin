@@ -12,6 +12,8 @@
 	3.2 角色分层、角色互斥、角色权限继承、角色分配、权限分配、角色用户数限制（待办）等。<br>
 4.权限管理。<br>
 
+用户名：admin  密码：123456<br>
+
 #### 数据表结构
 
 1.数据库表结构图：<br>
@@ -63,7 +65,7 @@ RBAC权限管理系统的具体业务跟具体需求有关，欢迎大家的指�
 
 
 #### 效果图
-用户名：admin  密码：123456<br>
+
 ![Image text](https://gitee.com/mrcen/ucan-admin/raw/master/src/main/webapp/imgs/login-effect.png)<br>
 ![Image text](https://gitee.com/mrcen/ucan-admin/raw/master/src/main/webapp/imgs/home-effect.png)<br>
 ![Image text](https://gitee.com/mrcen/ucan-admin/raw/master/src/main/webapp/imgs/user-effect.png)<br>
