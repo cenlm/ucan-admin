@@ -29,8 +29,8 @@
 				/toLogin.do = anon
 				/login = anon
 				/login.do = anon
-				/logout = logout
-				/logout.do = logout
+				<!-- /logout = logout
+				/logout.do = logout -->
 				/css/** = anon
 				/js/** = anon
 				/imgs/** = anon
@@ -59,7 +59,8 @@
 				<ref bean="shiroSessionListener" />
 			</list>
 		</property>
-		<property name="globalSessionTimeout" value="3600000" />
+		<!-- 全局session设置为永不过期 -->
+		<property name="globalSessionTimeout" value="-1" />
 		<property name="sessionIdCookie" ref="sessionIdCookie" />
 	</bean>
 
@@ -87,6 +88,7 @@
 		class="org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler">
 		<!-- 1小时检查一次session状态 -->
 		<property name="interval" value="3600000"></property>
+		<property name="sessionManager" ref="sessionManager"></property>
 	</bean>
 
 	<!--配置会话cookie模板 -->

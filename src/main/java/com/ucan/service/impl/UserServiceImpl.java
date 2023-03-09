@@ -217,7 +217,7 @@ public class UserServiceImpl implements IUserService {
 	Map<String, String> msgMap = new HashMap<>();
 	User user = new User();
 	user.setUserId(userId);
-	user.setPassword(EncryptionUtil.sha256Encode(oldPassword));
+	user.setPassword(EncryptionUtil.md5Encode(oldPassword));
 	int count = userMapper.queryByPasswordAndUserId(user);
 	if (count <= 0) {
 	    msgMap.put("code", "0");
@@ -225,7 +225,7 @@ public class UserServiceImpl implements IUserService {
 	} else {
 	    Map<String, String> paramMap = new HashMap<>();
 	    paramMap.put("userId", userId);
-	    paramMap.put("newPassword", EncryptionUtil.sha256Encode(newPassword));
+	    paramMap.put("newPassword", EncryptionUtil.md5Encode(newPassword));
 	    int updatePassword = userMapper.updatePassword(paramMap);
 	    if (updatePassword > 0) {
 		msgMap.put("code", "1");
