@@ -29,8 +29,7 @@
 				/toLogin.do = anon
 				/login = anon
 				/login.do = anon
-				<!-- /logout = logout
-				/logout.do = logout -->
+				<!-- /logout = logout /logout.do = logout -->
 				/css/** = anon
 				/js/** = anon
 				/imgs/** = anon
@@ -73,6 +72,8 @@
 		class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">
 		<property name="activeSessionsCacheName"
 			value="shiroActiveSessions" />
+		<property name="sessionIdGenerator"
+			ref="uCanSessionIdGenerator" />
 	</bean>
 
 	<!-- session缓存管理器，这里使用Ehcache -->
@@ -98,12 +99,16 @@
 		<property name="maxAge" value="-1" />
 		<property name="httpOnly" value="true" />
 	</bean>
-
+	<!-- 自定义Realm -->
 	<bean id="uCanRealm" class="com.ucan.shiro.UCanRealm">
 		<property name="cachingEnabled" value="true" />
 		<property name="authorizationCachingEnabled" value="true" />
 		<property name="authorizationCacheName"
 			value="shiroAuthzCache" />
+	</bean>
+	<!-- 自定义session id生成器 -->
+	<bean id="uCanSessionIdGenerator"
+		class="com.ucan.shiro.UcanSessionIdGenerator">
 	</bean>
 
 	<bean id="lifecycleBeanPostProcessor"
