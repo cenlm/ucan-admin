@@ -14,6 +14,8 @@
 
 用户名：admin  密码：123456<br>
 
+Github: github.com/cenlm/ucan-admin<br>
+
 #### 数据库表关系图
 
 1.数据库表关系图：<br>
