@@ -41,9 +41,9 @@ public class UserServiceImpl implements IUserService {
 	    // 表单接收到的未加密的明文密码
 	    String passwordStr = user.getPassword();
 	    if (passwordStr == "" || passwordStr == null) {// 如果前端不填写密码，则默认明文密码：123456
-		user.setPassword(EncryptionUtil.sha256Encode("123456"));
+		user.setPassword(EncryptionUtil.md5Encode("123456"));
 	    } else {
-		user.setPassword(EncryptionUtil.sha256Encode(passwordStr));
+		user.setPassword(EncryptionUtil.md5Encode(passwordStr));
 	    }
 	    user.setCreateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 	    user.setUserId(UUIDUtil.getUuid());
@@ -176,9 +176,9 @@ public class UserServiceImpl implements IUserService {
 	    // 表单接收到的未加密的明文密码
 	    String passwordStr = user.getPassword();
 	    if (passwordStr == "" || passwordStr == null) {// 如果前端不填写密码，则默认明文密码：123456
-		user.setPassword(EncryptionUtil.sha256Encode("123456"));
+		user.setPassword(EncryptionUtil.md5Encode("123456"));
 	    } else {
-		user.setPassword(EncryptionUtil.sha256Encode(passwordStr));
+		user.setPassword(EncryptionUtil.md5Encode(passwordStr));
 	    }
 	    user.setCreateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 	    user.setUserId(UUIDUtil.getUuid());
