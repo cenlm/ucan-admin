@@ -166,10 +166,10 @@ input[type='password'] {
 	</div>
 	<script src="js/layui/layui.js"></script>
 	<script src="js/jquery-3.6.3.min.js"></script>
-	<script src="js/login/login.js"></script>
+    <script src="js/login/login.js"></script>
 	<script type="text/javascript">
 	   var contextPath="<%=contextPath%>";
-                window.onload = function() {
+	    window.onload = function() {
 	                let url = document.location.href;
 	                if (url.indexOf("yes") == -1) {
 		                let t = new Date();
@@ -178,7 +178,7 @@ input[type='password'] {
 			                top.document.location.reload();
 		                }
 	                }
-                }
+                }  
 	</script>
 </body>
 </html>

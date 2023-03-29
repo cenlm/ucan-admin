@@ -95,8 +95,9 @@
 	<!--配置会话cookie模板 -->
 	<bean id="sessionIdCookie"
 		class="org.apache.shiro.web.servlet.SimpleCookie">
-		<constructor-arg name="name" value="shiro.session" />
-		<property name="maxAge" value="-1" />
+		<constructor-arg name="name" value="ucan-admin-cookie" />
+		<!-- cookie有效期：3天（259200），如果是-1，则关闭浏览器立马清除cookie -->
+		<property name="maxAge" value="259200" />
 		<property name="httpOnly" value="true" />
 	</bean>
 	<!-- 自定义Realm -->
@@ -105,7 +106,13 @@
 		<property name="authorizationCachingEnabled" value="true" />
 		<property name="authorizationCacheName"
 			value="shiroAuthzCache" />
+		<property name="credentialsMatcher" ref="limitLoginMatcher" />
 	</bean>
+
+	<!-- 登录失败次数匹配器 -->
+	<bean id="limitLoginMatcher"
+		class="com.ucan.shiro.LimitLoginCredentialsMatcher"></bean>
+
 	<!-- 自定义session id生成器 -->
 	<bean id="uCanSessionIdGenerator"
 		class="com.ucan.shiro.UcanSessionIdGenerator">

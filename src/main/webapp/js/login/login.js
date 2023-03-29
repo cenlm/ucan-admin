@@ -33,5 +33,7 @@ layui.use(['form'], function() {
 				});
 			}
 		});
+		//不加return false;会重复提交
+		return false;
 	});
 });

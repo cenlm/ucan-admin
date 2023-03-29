@@ -7,10 +7,11 @@ import java.util.Objects;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.DisabledAccountException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
-import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.subject.support.DefaultSubjectContext;
@@ -75,7 +76,7 @@ public class LoginController {
 					.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
 				if (!Objects.isNull(principal)) {
 				    String otherUser = (String) principal.getPrimaryPrincipal();
-				    //将在其他地方登录的相同的账号踢出系统
+				    // 将在其他地方登录的相同的账号踢出系统
 				    if (otherUser.equals(username)
 					    && user.getPassword().equals(EncryptionUtil.md5Encode(password))) {
 					s.setTimeout(100);
@@ -84,9 +85,11 @@ public class LoginController {
 
 			    });
 			}
-			
+
 			UsernamePasswordToken token = new UsernamePasswordToken(username,
 				EncryptionUtil.md5Encode(password));
+			// 要不要自定义过滤器来解决rememberMe失效的问题呢？
+			// https://blog.csdn.net/nsrainbow/article/details/36945267/
 			token.setRememberMe(rememberMe.equals("true") ? true : false);
 			currentUser.login(token);
 			User userObjUser = new User();
@@ -103,7 +106,13 @@ public class LoginController {
 			msg = JSON.toJSONString(Response.success("用户登录成功！"));
 
 		    } catch (AuthenticationException e) {
-			msg = JSON.toJSONString(Response.fail("用户名或密码错误！"));
+			if (e instanceof IncorrectCredentialsException) {
+			    msg = JSON.toJSONString(Response.fail("用户名或密码错误！"));
+			} else if (e instanceof DisabledAccountException) {
+			    msg = JSON.toJSONString(Response.fail(e.getMessage()));
+			} else {
+			    msg = JSON.toJSONString(Response.fail("登录失败！"));
+			}
 			e.printStackTrace();
 		    }
 		} else {
