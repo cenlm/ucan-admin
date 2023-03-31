@@ -55,20 +55,14 @@ public class PostController {
 
     @RequestMapping("/addPost")
     @ResponseBody
-    public String addPost(Post post) {
+    public String addPost(Post post) throws Exception {
 	String msg = "";
-	try {
 	    int result = postService.addPost(post);
 	    if (result > 0) {
 		return JSON.toJSONString(Response.success("成功新增职位：【" + post.getPostName() + "】，并分配了基础角色！"));
 	    } else {
 		return JSON.toJSONString(Response.fail("职位新增失败！"));
 	    }
-	} catch (Exception e) {
-	    msg = JSON.toJSONString(Response.fail(e.getMessage()));
-	    e.printStackTrace();
-	}
-	return msg;
     }
 
     @RequestMapping("/updatePost")

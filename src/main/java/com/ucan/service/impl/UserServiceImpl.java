@@ -9,12 +9,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ucan.base.exception.CustomException;
 import com.ucan.dao.UserMapper;
 import com.ucan.dao.UserOrgMapper;
 import com.ucan.entity.User;
 import com.ucan.entity.UserOrganization;
-import com.ucan.service.IUserRoleService;
+import com.ucan.exception.CustomException;
 import com.ucan.service.IUserService;
 import com.ucan.utils.EncryptionUtil;
 import com.ucan.utils.UUIDUtil;
@@ -241,6 +240,11 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<User> queryUserDetail(String userId) {
 	return userMapper.queryUserDetail(userId);
+    }
+
+    @Override
+    public int updatePasswordReset(User user) {
+	return userMapper.updatePasswordReset(user);
     }
 
 }

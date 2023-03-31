@@ -101,20 +101,14 @@ public class PermissionController {
 
     @RequestMapping("/delPermissionById")
     @ResponseBody
-    public String delPermissionById(String permissionId) {
+    public String delPermissionById(String permissionId) throws Exception {
 	String result = "";
-	try {
-	    int updCount = permissionService.deletePermissionById(permissionId);
-	    if (updCount > 0) {
-		result = JSON.toJSONString(Response.success("权限删除成功！"));
-	    } else {
-		result = JSON.toJSONString(Response.fail("权限删除失败！"));
-	    }
-	} catch (Exception e) {
-	    result = JSON.toJSONString(e.getMessage());
-	    e.printStackTrace();
+	int updCount = permissionService.deletePermissionById(permissionId);
+	if (updCount > 0) {
+	    result = JSON.toJSONString(Response.success("权限删除成功！"));
+	} else {
+	    result = JSON.toJSONString(Response.fail("权限删除失败！"));
 	}
-
 	return result;
     }
 

@@ -267,6 +267,8 @@ element.style {
 			                        });
 		                        }
 		                });
+		              //不加return false;会重复提交
+				return false;
 	                });
 
 	                function renderUserDetail(){
@@ -365,6 +367,8 @@ element.style {
 				                        });
 			                        }
 			                });
+	                	//不加return false;会重复提交
+	         		return false;
 	                });
 	                
                 });

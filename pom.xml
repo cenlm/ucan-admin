@@ -126,7 +126,13 @@
 			<artifactId>jackson-annotations</artifactId>
 			<version>${jackson.version}</version>
 		</dependency>
-		<!--fastjson2 单独使用，未作为spring 消息转换器-->
+		<!-- java jwt-->
+		<dependency>
+		  <groupId>com.auth0</groupId>
+		  <artifactId>java-jwt</artifactId>
+		  <version>4.3.0</version>
+		</dependency>
+		<!--fastjson2 -->
 		<dependency>
 			<groupId>com.alibaba.fastjson2</groupId>
 			<artifactId>fastjson2</artifactId>

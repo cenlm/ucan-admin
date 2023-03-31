@@ -12,7 +12,6 @@ import com.ucan.entity.User;
  * @date 2022年12月23日 下午8:36:11
  */
 public interface UserMapper extends BaseDao<User> {
-    int updatePassword(User user);
 
     /**
      * 添加<用户-职位>关系映射
@@ -113,13 +112,20 @@ public interface UserMapper extends BaseDao<User> {
     int updatePassword(Map<String, String> paramMap);
 
     /**
+     * 重置密码
+     * 
+     * @param userId
+     * @param password
+     * @return
+     */
+    int updatePasswordReset(User user);
+
+    /**
      * 个人设置页详情内容
      * 
      * @param userId
      * @return
      */
     List<User> queryUserDetail(String userId);
-
-   
 
 }
