@@ -1,7 +1,6 @@
 <!DOCTYPE web-app PUBLIC
  "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
-
 <web-app>
 	<!-- Spring配置文件路径 ,日志文件先不管classpath:log4j2.xml -->
 	<context-param>
@@ -12,7 +11,6 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-
 	<!-- 自动发现shiroFilter，具体看org.apache.shiro.spring.web.ShiroFilterFactoryBean中的说明 -->
 	<filter>
 		<filter-name>shiroFilter</filter-name>
@@ -26,7 +24,6 @@
 		<filter-name>shiroFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-
 	<!-- SpringMVC 前端控制器 -->
 	<servlet>
 		<servlet-name>springMVC</servlet-name>
@@ -37,12 +34,10 @@
 			<param-value>classpath:spring-mvc.xml</param-value>
 		</init-param>
 	</servlet>
-
 	<servlet-mapping>
 		<servlet-name>springMVC</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-
 	<!-- 配置字符编码过滤器 -->
 	<filter>
 		<filter-name>CharacterEncodingFilter</filter-name>
@@ -52,7 +47,6 @@
 			<param-value>utf-8</param-value>
 		</init-param>
 	</filter>
-
 	<filter-mapping>
 		<filter-name>CharacterEncodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
@@ -61,7 +55,6 @@
 	<welcome-file-list>
 		<welcome-file>/WEB-INF/jsp/login.jsp</welcome-file>
 	</welcome-file-list>
-
 	<error-page>
 		<error-code>500</error-code>
 		<location>/WEB-INF/jsp/error/500.jsp</location>
@@ -71,4 +64,8 @@
 		<location>/WEB-INF/jsp/error/404.jsp</location>
 	</error-page>
 
+<!-- 	<error-page>
+		<exception-type>UcanExpiredSessionException</exception-type>
+		<location>/WEB-INF/jsp/exception/session_expired.jsp</location>
+	</error-page> -->
 </web-app>

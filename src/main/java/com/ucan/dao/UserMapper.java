@@ -3,6 +3,8 @@ package com.ucan.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.ucan.base.BaseDao;
 import com.ucan.entity.Organization;
 import com.ucan.entity.User;
@@ -123,9 +125,17 @@ public interface UserMapper extends BaseDao<User> {
     /**
      * 个人设置页详情内容
      * 
-     * @param userId
+     * @param map
      * @return
      */
-    List<User> queryUserDetail(String userId);
+    List<User> queryUserDetail(Map<String, String> map);
+
+    /**
+     * 通过用户名查询用户数（用于新增、修改用户信息时的检测）
+     * 
+     * @param user
+     * @return 用户数统计
+     */
+    int queryUsersCountByName(String userName);
 
 }

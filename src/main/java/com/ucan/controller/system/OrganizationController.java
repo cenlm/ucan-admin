@@ -15,6 +15,7 @@ import com.ucan.entity.tree.response.DTreeResponse;
 import com.ucan.service.IOrganizationService;
 import com.ucan.service.IRoleOrgService;
 import com.ucan.service.IUserOrgService;
+import com.ucan.shiro.realm.UCanRealm;
 
 /**
  * 组织结构控制器
@@ -31,6 +32,8 @@ public class OrganizationController {
     private IRoleOrgService roleOrgService;
     @Autowired
     private IUserOrgService userOrgService;
+//    @Autowired
+//    private UCanRealm ucanRealm;
 
     @RequestMapping("/getOrganizationTreeNodes")
     @ResponseBody
@@ -72,16 +75,17 @@ public class OrganizationController {
 	String msg = "";
 	int result = 0;
 
-	    if (isSuper.equals("1")) {
-		return JSON.toJSONString(Response.fail("不允许给超级管理员再分配组织！"));
-	    }
-	    result = userOrgService.updateUserOrgRelation(userId, isSuper, checkedOrgIds);
+	if (isSuper.equals("1")) {
+	    return JSON.toJSONString(Response.fail("不允许给超级管理员再分配组织！"));
+	}
+	result = userOrgService.updateUserOrgRelation(userId, isSuper, checkedOrgIds);
 
-	    if (result > 0) {
-		msg = JSON.toJSONString(Response.success("用户已成功分配组织!"));
-	    } else {
-		msg = JSON.toJSONString(Response.fail("组织分配失败！"));
-	    }
+	if (result > 0) {
+//	    ucanRealm.removeAllCachedAuthorizationInfo();
+	    msg = JSON.toJSONString(Response.success("用户已成功分配组织!"));
+	} else {
+	    msg = JSON.toJSONString(Response.fail("组织分配失败！"));
+	}
 	return msg;
     }
 

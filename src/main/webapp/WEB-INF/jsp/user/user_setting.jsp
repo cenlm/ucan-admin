@@ -1,5 +1,7 @@
+<%@page import="java.io.PrintWriter"%>
 <%@page import="org.apache.shiro.session.Session"%>
 <%@page import="org.apache.shiro.SecurityUtils"%>
+<%@page import="org.apache.shiro.subject.Subject"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -18,11 +20,14 @@ element.style {
 </style>
 </head>
 <body>
-	<%
+<%
 	String contextPath = request.getContextPath();
-	Session mySession = SecurityUtils.getSubject().getSession(false);
+	Subject subject = SecurityUtils.getSubject();
+	Session mySession = subject.getSession(false);
 	String userId = (String) mySession.getAttribute("currentUserId");
-	%>
+	String principal = (String) subject.getPrincipal();
+%>
+
 
 	<div class="layui-fluid">
 		<div class="layui-row" style="background-color: #F7F8FB;"
@@ -89,8 +94,8 @@ element.style {
 							<label class="layui-form-label">公司/职位</label>
 							<div class="layui-input-inline">
 								<input type="text" name="postName" autocomplete="on"
-									class="layui-input layui-disabled" style="width: 450px" placeholder="暂无纪录"
-									disabled>
+									class="layui-input layui-disabled" style="width: 450px"
+									placeholder="暂无纪录" disabled>
 							</div>
 						</div>
 					</div>
@@ -107,8 +112,9 @@ element.style {
 						<div class="layui-inline">
 							<label class="layui-form-label">上次修改</label>
 							<div class="layui-input-inline">
-								<input type="text" name="modifyTime" placeholder="暂无修改" 
-									autocomplete="on" class="layui-input layui-disabled" style="width: 450px" disabled>
+								<input type="text" name="modifyTime" placeholder="暂无修改"
+									autocomplete="on" class="layui-input layui-disabled"
+									style="width: 450px" disabled>
 							</div>
 						</div>
 					</div>
@@ -125,8 +131,8 @@ element.style {
 							<label class="layui-form-label">更早登录</label>
 							<div class="layui-input-inline">
 								<input type="text" name="lastLogin" autocomplete="on"
-									class="layui-input layui-disabled" style="width: 450px" placeholder="暂无纪录"
-									disabled>
+									class="layui-input layui-disabled" style="width: 450px"
+									placeholder="暂无纪录" disabled>
 							</div>
 						</div>
 					</div>
@@ -227,34 +233,45 @@ element.style {
 		layui.use([ 'form' ] , function() {
 	              var form = layui.form;
 	              var userId="<%=userId%>";
-	              var contextPath= "<%=contextPath%>";
-	                $("#updPassword input[name='userId']").val(userId);
-	                $("#userDetail input[name='userId']").val(userId);
-	                
-	                //修改密码
-	                form.on('submit(updPassword)' , function(data) {
-		                var formData = form.val('updPassword');
-		                if (formData.newPassword != formData.confirmPassword) {
-			                layer.msg("两次输入的新密码不一致！" , {
-				                icon : 5
-			                });
-			                return;
-		                }
+	              var principal="<%=principal%>";
+	              var contextPath= "<%=contextPath%>"; 
 
-		                let requestUrl = contextPath + "/user/updatePassword";
+	                function renderUserDetail() {
 		                $.ajax({
 		                        type : "POST" ,
-		                        url : requestUrl ,
-		                        data : formData ,
+		                        url : contextPath + "/user/queryUserDetail" ,
+		                        data : {
+		                                userId : userId ,
+		                                userName : principal
+		                        } ,
 		                        dataType : "json" ,
 		                        success : function(result) {
 			                        if (result.code == 0) {
-				                        layer.msg(result.msg+"新密码【"+formData.newPassword+"】，" + "您需要重新登录！" , {
-					                        icon : 6
-				                        });
-				                        setTimeout(function() {
-					                        window.location.href = contextPath + "/logout";
-				                        } , "5000");
+				                        var data = result.data[0];
+				                        //为密码修改表单填充隐藏userId
+				                        $("#updPassword input[name='userId']").val(userId);
+				                        $("#userDetail input[name='userId']").val(userId);
+				                        $("#userDetail input[name='userName']").val(data.userName);
+				                        $("#userDetail input[name='email']").val(data.email);
+				                        $("#userDetail input[name='cellPhoneNumber']").val(data.cellPhoneNumber);
+				                        $("#userDetail input[name='address']").val(data.address);
+				                        $("#userDetail input[name='userAlias']").val(data.userAlias);
+				                        $("#userDetail input[name='postName']").val(data.post.postName);
+				                        $("#userDetail input[name='createTime']").val(data.createTime);
+				                        $("#userDetail input[name='modifyTime']").val(data.modifyTime);
+				                        $("#userDetail input[name='entryDate']").val(data.entryDate);
+				                        $("#userDetail input[name='lastLogin']").val(data.lastLogin);
+				                        $("#userDetail input[name='isEnable']").val(data.isEnable);
+				                        /* $("#userDetail input[type='radio']").val(data.sex); */
+				                        //重新渲染性别
+				                        if (data.sex == 1) {
+					                        $("form[id='userDetail'] input[name='sex'][value=1]").prop('checked' , true);
+				                        } else {
+					                        $("form[id='userDetail'] input[name='sex'][value=0]").prop('checked' , true);
+				                        }
+				                        $("#userDetail textarea[name='remarks']").val(data.remarks);
+				                        form.render();
+				                        oldUserName = $("#userDetail input[name='userName']").val();
 			                        } else {
 				                        layer.msg(result.msg , {
 					                        icon : 5
@@ -267,110 +284,95 @@ element.style {
 			                        });
 		                        }
 		                });
-		              //不加return false;会重复提交
-				return false;
-	                });
-
-	                function renderUserDetail(){
-	                	 $.ajax({
-			                        type : "POST" ,
-			                        url : contextPath + "/user/queryUserDetail",
-			                        data : {
-			                        	userId: userId
-			                        } ,
-			                        dataType : "json" ,
-			                        success : function(result) {
-				                        if (result.code == 0) {
-				                        	var data=result.data[0];
-					                       $("#userDetail input[name='userName']").val(data.userName);
-					                       $("#userDetail input[name='email']").val(data.email);
-					                       $("#userDetail input[name='cellPhoneNumber']").val(data.cellPhoneNumber);
-					                       $("#userDetail input[name='address']").val(data.address);
-					                       $("#userDetail input[name='userAlias']").val(data.userAlias);
-					                       $("#userDetail input[name='postName']").val(data.post.postName);
-					                       $("#userDetail input[name='createTime']").val(data.createTime);
-					                       $("#userDetail input[name='modifyTime']").val(data.modifyTime);
-					                       $("#userDetail input[name='entryDate']").val(data.entryDate);
-					                       $("#userDetail input[name='lastLogin']").val(data.lastLogin);
-					                       $("#userDetail input[name='isEnable']").val(data.isEnable);
-					                       /* $("#userDetail input[type='radio']").val(data.sex); */
-								               	//重新渲染性别
-											if (data.sex == 1) {
-												$("form[id='userDetail'] input[name='sex'][value=1]")
-													.prop(
-														'checked', true);
-											} else {
-												$("form[id='userDetail'] input[name='sex'][value=0]")
-													.prop(
-														'checked', true);
-											}
-					                       $("#userDetail textarea[name='remarks']").val(data.remarks);
-				                           form.render();
-				                           oldUserName =  $("#userDetail input[name='userName']").val();
-				                        } else {
-					                        layer.msg("没有查到数据！" , {
-						                        icon : 5
-					                        });
-				                        }
-			                        } ,
-			                        error : function(e) {
-				                        layer.msg("没有查到数据！" , {
-					                        icon : 2
-				                        });
-			                        }
-			                });
 	                }
 	                renderUserDetail();
 	                var oldUserName;
 	                form.on('submit(userDetail)' , function(data) {
-	                	let formData = form.val('userDetail');
-	                	 $.ajax({
-			                        type : "POST" ,
-			                        url : contextPath + "/user/updateUser",
-			                        contentType: 'application/json; charset=UTF-8',
-			                        data : JSON.stringify({
-			                        	userId: userId,
-			                        	userName: formData.userName,
-			                        	email: formData.email,
-			                        	cellPhoneNumber: formData.cellPhoneNumber,
-			                        	address: formData.address,
-			                        	userAlias: formData.userAlias,
-			                        	sex: formData.sex,
-			                        	remarks: formData.remarks
-			                        }) ,
-			                        dataType : "json" ,
-			                        success : function(result) {
-				                        if (result.code == 0) {
-				                        	  if(oldUserName!=formData.userName){
-				                        		  layer.msg(result.msg+"用户名已更改为【"+formData.userName+"】，您需要重新登录！" , {
-								                        icon : 6
-							                        });
-							                        setTimeout(function() {
-								                        window.location.href = contextPath + "/logout";
-							                        } , "4000");
-				                        	  }else{
-				                        		  layer.msg(result.msg , {
-								                        icon : 6
-							                        });
-				                        	  }
-				                        	  
-				                     
+		                let formData = form.val('userDetail');
+		                $.ajax({
+		                        type : "POST" ,
+		                        url : contextPath + "/user/updateUser" ,
+		                        contentType : 'application/json; charset=UTF-8' ,
+		                        data : JSON.stringify({
+		                                userId : formData.userId ,
+		                                userName : formData.userName ,
+		                                email : formData.email ,
+		                                cellPhoneNumber : formData.cellPhoneNumber ,
+		                                address : formData.address ,
+		                                userAlias : formData.userAlias ,
+		                                sex : formData.sex ,
+		                                remarks : formData.remarks
+		                        }) ,
+		                        dataType : "json" ,
+		                        success : function(result) {
+			                        if (result.code == 0) {
+				                        if (oldUserName != formData.userName) {
+					                        layer.msg(result.msg + "用户名已更改为【" + formData.userName + "】，您需要重新登录！" , {
+						                        icon : 6
+					                        });
+					                        setTimeout(function() {
+						                        window.location.href = contextPath + "/logout";
+					                        } , "4000");
 				                        } else {
 					                        layer.msg(result.msg , {
-						                        icon : 5
+						                        icon : 6
 					                        });
 				                        }
-			                        } ,
-			                        error : function(e) {
-				                        layer.msg("更新失败！" , {
-					                        icon : 2
+
+			                        } else {
+				                        layer.msg(result.msg , {
+					                        icon : 5
 				                        });
 			                        }
-			                });
-	                	//不加return false;会重复提交
-	         		return false;
+		                        } ,
+		                        error : function(e) {
+			                        layer.msg(e.responseText , {
+				                        icon : 2
+			                        });
+		                        }
+		                });
+		                //不加return false;会重复提交
+		                return false;
 	                });
-	                
+	                //修改密码
+	                    form.on('submit(updPassword)' , function(data) {
+	                        let formData = form.val('updPassword');
+	                        if (formData.newPassword != formData.confirmPassword) {
+	                            layer.msg("两次输入的新密码不一致！" , {
+	                                icon : 5
+	                            });
+	                            return;
+	                        }
+
+	                        let requestUrl = contextPath + "/user/updatePassword";
+	                        $.ajax({
+	                                type : "POST" ,
+	                                url : requestUrl ,
+	                                data : formData ,
+	                                dataType : "json" ,
+	                                success : function(result) {
+	                                    if (result.code == 0) {
+	                                        layer.msg(result.msg + "新密码【" + formData.newPassword + "】，" + "您需要重新登录！" , {
+	                                            icon : 6
+	                                        });
+	                                        setTimeout(function() {
+	                                            window.location.href = contextPath + "/logout";
+	                                        } , "5000");
+	                                    } else {
+	                                        layer.msg(result.msg , {
+	                                            icon : 5
+	                                        });
+	                                    }
+	                                } ,
+	                                error : function(e) {
+	                                    layer.msg(e.responseText , {
+	                                        icon : 2
+	                                    });
+	                                }
+	                        });
+	                        //不加return false;会重复提交
+	                        return false;
+	                    });
                 });
 	</script>
 

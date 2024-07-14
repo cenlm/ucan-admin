@@ -178,7 +178,7 @@ input[type='password'] {
 			                top.document.location.reload();
 		                }
 	                }
-                }  
+                }
 	</script>
 </body>
 </html>

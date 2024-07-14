@@ -30,83 +30,83 @@ public class NodeStatus<T extends DTreeNode> {
      * @return
      */
     public List<T> judgeNoAllStatusToShowTree(List<T> nodes, List<String> matchedIds, boolean isAll) {
-	if (nodes.size() > 0 && matchedIds.size() > 0) {
-	    nodes.forEach(item -> {
-		// 计算节点是否有子节点
-		List<T> children = item.getChildren();
-		if (children.size() > 0) {// 如果有子节点，则与matchedIds进行交集计算
-		    if (isAll) {// 如果当前节点已被选中，则他的所有子节点都会被选中
-			List<CheckArr> checkArr = item.getCheckArr();
-			checkArr.forEach(checkedArr -> {
-			    checkedArr.setType("1");
-			    checkedArr.setChecked("1");
-			});
-			judgeNoAllStatusToShowTree(children, matchedIds, true);
-		    } else {
-			if (matchedIds.contains(item.getId())) {// 如果当前已被匹配，则设置为被选中状态
-			    List<CheckArr> checkArr = item.getCheckArr();
-			    checkArr.forEach(checkedArr -> {
-				checkedArr.setType("1");
-				checkedArr.setChecked("1");
-			    });
-			    judgeNoAllStatusToShowTree(children, matchedIds, true);
-			} else {
-			    List<String> ids = new ArrayList<>();
-			    children.forEach(item1 -> {
-				ids.add(item1.getId());
-			    });
-			    List<String> intersection = ids.stream().filter(perid -> matchedIds.contains(perid))
-				    .collect(Collectors.toList());
-			    if (intersection.size() == children.size()) {// id交集数据长度等于children，说明子节点被全选了，此时父节点要全选
-				List<CheckArr> checkArr = item.getCheckArr();
-				checkArr.forEach(checkedArr -> {
-				    checkedArr.setType("1");
-				    checkedArr.setChecked("1");
-				});
-			    } else if (intersection.size() == 0) {// 如果都没有被选中，则当前节点设置为未选中
-				List<CheckArr> checkArr = item.getCheckArr();
-				checkArr.forEach(checkedArr -> {
-				    checkedArr.setType("1");
-				    checkedArr.setChecked("0");
-				});
-			    } else {
-				List<CheckArr> checkArr = item.getCheckArr();
-				checkArr.forEach(checkedArr -> {
-				    checkedArr.setType("1");
-				    checkedArr.setChecked("2");
-				});
-			    }
-			    judgeNoAllStatusToShowTree(children, matchedIds, false);
-			}
-		    }
+        if (nodes.size() > 0 && matchedIds.size() > 0) {
+            nodes.forEach(item -> {
+                // 计算节点是否有子节点
+                List<T> children = item.getChildren();
+                if (children.size() > 0) {// 如果有子节点，则与matchedIds进行交集计算
+                    if (isAll) {// 如果当前节点已被选中，则他的所有子节点都会被选中
+                        List<CheckArr> checkArr = item.getCheckArr();
+                        checkArr.forEach(checkedArr -> {
+                            checkedArr.setType("1");
+                            checkedArr.setChecked("1");
+                        });
+                        judgeNoAllStatusToShowTree(children, matchedIds, true);
+                    } else {
+                        if (matchedIds.contains(item.getId())) {// 如果当前已被匹配，则设置为被选中状态
+                            List<CheckArr> checkArr = item.getCheckArr();
+                            checkArr.forEach(checkedArr -> {
+                                checkedArr.setType("1");
+                                checkedArr.setChecked("1");
+                            });
+                            judgeNoAllStatusToShowTree(children, matchedIds, true);
+                        } else {
+                            List<String> ids = new ArrayList<>();
+                            children.forEach(item1 -> {
+                                ids.add(item1.getId());
+                            });
+                            List<String> intersection = ids.stream().filter(perid -> matchedIds.contains(perid))
+                                    .collect(Collectors.toList());
+                            if (intersection.size() == children.size()) {// id交集数据长度等于children，说明子节点被全选了，此时父节点要全选
+                                List<CheckArr> checkArr = item.getCheckArr();
+                                checkArr.forEach(checkedArr -> {
+                                    checkedArr.setType("1");
+                                    checkedArr.setChecked("1");
+                                });
+                            } else if (intersection.size() == 0) {// 如果都没有被选中，则当前节点设置为未选中
+                                List<CheckArr> checkArr = item.getCheckArr();
+                                checkArr.forEach(checkedArr -> {
+                                    checkedArr.setType("1");
+                                    checkedArr.setChecked("0");
+                                });
+                            } else {
+                                List<CheckArr> checkArr = item.getCheckArr();
+                                checkArr.forEach(checkedArr -> {
+                                    checkedArr.setType("1");
+                                    checkedArr.setChecked("2");
+                                });
+                            }
+                            judgeNoAllStatusToShowTree(children, matchedIds, false);
+                        }
+                    }
 
-		} else {// 如果没有子节点，则直接判断是否节点匹配
-		    if (matchedIds.contains(item.getId())) {// 匹配则是选中状态
-			List<CheckArr> checkArr = item.getCheckArr();
-			checkArr.forEach(checkedArr -> {
-			    checkedArr.setType("1");
-			    checkedArr.setChecked("1");
-			});
-		    } else {
-			if (isAll) {// 如果根节点被选中了，则所有子节点都会被选中
-			    List<CheckArr> checkArr = item.getCheckArr();
-			    checkArr.forEach(checkedArr -> {
-				checkedArr.setType("1");
-				checkedArr.setChecked("1");
-			    });
-			} else {
-			    List<CheckArr> checkArr = item.getCheckArr();
-			    checkArr.forEach(checkedArr -> {
-				checkedArr.setType("1");
-				checkedArr.setChecked("0");
-			    });
-			}
+                } else {// 如果没有子节点，则直接判断是否节点匹配
+                    if (matchedIds.contains(item.getId())) {// 匹配则是选中状态
+                        List<CheckArr> checkArr = item.getCheckArr();
+                        checkArr.forEach(checkedArr -> {
+                            checkedArr.setType("1");
+                            checkedArr.setChecked("1");
+                        });
+                    } else {
+                        if (isAll) {// 如果根节点被选中了，则所有子节点都会被选中
+                            List<CheckArr> checkArr = item.getCheckArr();
+                            checkArr.forEach(checkedArr -> {
+                                checkedArr.setType("1");
+                                checkedArr.setChecked("1");
+                            });
+                        } else {
+                            List<CheckArr> checkArr = item.getCheckArr();
+                            checkArr.forEach(checkedArr -> {
+                                checkedArr.setType("1");
+                                checkedArr.setChecked("0");
+                            });
+                        }
 
-		    }
-		}
-	    });
-	}
-	return nodes;
+                    }
+                }
+            });
+        }
+        return nodes;
     }
 
     /**
@@ -123,49 +123,49 @@ public class NodeStatus<T extends DTreeNode> {
      * @return
      */
     public List<T> judgeAllStatusToShowTree(List<T> nodes, List<String> matchedIds) {
-	if (nodes.size() > 0 && matchedIds.size() > 0) {
-	    nodes.forEach(item -> {
-		// 计算节点是否有子节点
-		List<T> children = item.getChildren();
-		if (children.size() > 0) {// 如果有子节点，则与matchedIds进行交集计算
-		    List<String> ids = new ArrayList<>();
-		    children.forEach(item1 -> {
-			ids.add(item1.getId());
-		    });
-		    List<String> intersection = ids.stream().filter(perid -> matchedIds.contains(perid))
-			    .collect(Collectors.toList());
-		    if (intersection.size() > 0) {// 只要有子节点被选中，父节点就要选中
-			List<CheckArr> checkArr = item.getCheckArr();
-			checkArr.forEach(checkedArr -> {
-			    checkedArr.setType("0");
-			    checkedArr.setChecked("1");
-			});
-		    } else {// 没有一个子节点被选中，父节点就不选中
-			List<CheckArr> checkArr = item.getCheckArr();
-			checkArr.forEach(checkedArr -> {
-			    checkedArr.setType("0");
-			    checkedArr.setChecked("0");
-			});
-		    }
-		    judgeAllStatusToShowTree(children, matchedIds);
-		} else {// 如果没有子节点，则直接判断是否节点匹配
-		    if (matchedIds.contains(item.getId())) {// 匹配则是选中状态
-			List<CheckArr> checkArr = item.getCheckArr();
-			checkArr.forEach(checkedArr -> {
-			    checkedArr.setType("0");
-			    checkedArr.setChecked("1");
-			});
-		    } else {// 节点未被选中
-			List<CheckArr> checkArr = item.getCheckArr();
-			checkArr.forEach(checkedArr -> {
-			    checkedArr.setType("0");
-			    checkedArr.setChecked("0");
-			});
-		    }
-		}
-	    });
-	}
-	return nodes;
+        if (nodes.size() > 0 && matchedIds.size() > 0) {
+            nodes.forEach(item -> {
+                // 计算节点是否有子节点
+                List<T> children = item.getChildren();
+                if (children.size() > 0) {// 如果有子节点，则与matchedIds进行交集计算
+                    List<String> ids = new ArrayList<>();
+                    children.forEach(item1 -> {
+                        ids.add(item1.getId());
+                    });
+                    List<String> intersection = ids.stream().filter(perid -> matchedIds.contains(perid))
+                            .collect(Collectors.toList());
+                    if (intersection.size() > 0) {// 只要有子节点被选中，父节点就要选中
+                        List<CheckArr> checkArr = item.getCheckArr();
+                        checkArr.forEach(checkedArr -> {
+                            checkedArr.setType("0");
+                            checkedArr.setChecked("1");
+                        });
+                    } else {// 没有一个子节点被选中，父节点就不选中
+                        List<CheckArr> checkArr = item.getCheckArr();
+                        checkArr.forEach(checkedArr -> {
+                            checkedArr.setType("0");
+                            checkedArr.setChecked("0");
+                        });
+                    }
+                    judgeAllStatusToShowTree(children, matchedIds);
+                } else {// 如果没有子节点，则直接判断是否节点匹配
+                    if (matchedIds.contains(item.getId())) {// 匹配则是选中状态
+                        List<CheckArr> checkArr = item.getCheckArr();
+                        checkArr.forEach(checkedArr -> {
+                            checkedArr.setType("0");
+                            checkedArr.setChecked("1");
+                        });
+                    } else {// 节点未被选中
+                        List<CheckArr> checkArr = item.getCheckArr();
+                        checkArr.forEach(checkedArr -> {
+                            checkedArr.setType("0");
+                            checkedArr.setChecked("0");
+                        });
+                    }
+                }
+            });
+        }
+        return nodes;
     }
 
     /**
@@ -177,44 +177,44 @@ public class NodeStatus<T extends DTreeNode> {
      * @return
      */
     public List<T> judgeSelfStatusToShowTree(List<T> nodes, List<String> matchedIds) {
-	if (nodes.size() > 0 && matchedIds.size() > 0) {
-	    nodes.forEach(item -> {
-		// 判断当前节点状态
-		if (matchedIds.contains(item.getId())) {// 数据匹配到当前节点，则直接设置选中
-		    List<CheckArr> checkArr = item.getCheckArr();
-		    checkArr.forEach(checkedArr -> {
-			checkedArr.setType("3");
-			checkedArr.setChecked("1");
-		    });
-		} else {
-		    List<CheckArr> checkArr = item.getCheckArr();
-		    checkArr.forEach(checkedArr -> {
-			checkedArr.setType("3");
-			checkedArr.setChecked("0");
-		    });
-		}
-		// 计算节点是否有子节点
-		List<T> children = item.getChildren();
-		if (children.size() > 0) {// 如果有子节点，则判断子节点状态
-		    children.forEach(child -> {
-			if (matchedIds.contains(child.getId())) {
-			    List<CheckArr> checkArr = child.getCheckArr();
-			    checkArr.forEach(checkedArr -> {
-				checkedArr.setType("3");
-				checkedArr.setChecked("1");
-			    });
-			} else {
-			    List<CheckArr> checkArr = child.getCheckArr();
-			    checkArr.forEach(checkedArr -> {
-				checkedArr.setType("3");
-				checkedArr.setChecked("0");
-			    });
-			}
-		    });
-		    judgeSelfStatusToShowTree(children, matchedIds);
-		}
-	    });
-	}
-	return nodes;
+        if (nodes.size() > 0 && matchedIds.size() > 0) {
+            nodes.forEach(item -> {
+                // 判断当前节点状态
+                if (matchedIds.contains(item.getId())) {// 数据匹配到当前节点，则直接设置选中
+                    List<CheckArr> checkArr = item.getCheckArr();
+                    checkArr.forEach(checkedArr -> {
+                        checkedArr.setType("3");
+                        checkedArr.setChecked("1");
+                    });
+                } else {
+                    List<CheckArr> checkArr = item.getCheckArr();
+                    checkArr.forEach(checkedArr -> {
+                        checkedArr.setType("3");
+                        checkedArr.setChecked("0");
+                    });
+                }
+                // 计算节点是否有子节点
+                List<T> children = item.getChildren();
+                if (children.size() > 0) {// 如果有子节点，则判断子节点状态
+                    children.forEach(child -> {
+                        if (matchedIds.contains(child.getId())) {
+                            List<CheckArr> checkArr = child.getCheckArr();
+                            checkArr.forEach(checkedArr -> {
+                                checkedArr.setType("3");
+                                checkedArr.setChecked("1");
+                            });
+                        } else {
+                            List<CheckArr> checkArr = child.getCheckArr();
+                            checkArr.forEach(checkedArr -> {
+                                checkedArr.setType("3");
+                                checkedArr.setChecked("0");
+                            });
+                        }
+                    });
+                    judgeSelfStatusToShowTree(children, matchedIds);
+                }
+            });
+        }
+        return nodes;
     }
 }

@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:task="http://www.springframework.org/schema/task"
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:tx="http://www.springframework.org/schema/tx"
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="
 	http://www.springframework.org/schema/beans 
 	http://www.springframework.org/schema/beans/spring-beans-4.2.xsd 
@@ -17,20 +14,18 @@
 	http://www.springframework.org/schema/tx
 	https://www.springframework.org/schema/tx/spring-tx.xsd
 ">
+
+	<!-- 开启@AspectJ注解支持 -->
 	<aop:aspectj-autoproxy proxy-target-class="false" />
+
 	<!-- 加载数据库配置文件 ,classpath:log4j.properties -->
-	<context:property-placeholder
-		location="classpath:db.properties" />
-	<context:component-scan
-		base-package="com.ucan.service,com.ucan.exception">
-	</context:component-scan>
+	<context:property-placeholder location="classpath:db.properties,classpath:socket.properties" />
+	<!-- bean 类文件扫描配置 -->
+	<context:component-scan base-package="com.ucan.service,com.ucan.exception,com.ucan.websocket" />
 
 	<!-- 数据源 -->
-	<bean id="pooledDataSource"
-		class="com.alibaba.druid.pool.DruidDataSource" init-method="init"
-		destroy-method="close">
-		<property name="driverClassName"
-			value="${jdbc.driverClassName}" />
+	<bean id="pooledDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
 		<property name="url" value="${jdbc.url}" />
 		<property name="username" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
@@ -46,24 +41,19 @@
 	</bean>
 
 	<!-- 创建sqlSessionFactory，自动扫描mapper配置文件 -->
-	<bean id="sqlSessionFactory"
-		class="org.mybatis.spring.SqlSessionFactoryBean">
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="pooledDataSource" />
-		<property name="mapperLocations"
-			value="classpath*:com/ucan/mappers/**/*.xml" />
-		<property name="configLocation"
-			value="classpath:mybatis-config.xml"></property>
+		<property name="mapperLocations" value="classpath*:com/ucan/mappers/**/*.xml" />
+		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
 	</bean>
 
-	<bean id="ehcacheManagerFactory"
-		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+	<bean id="ehcacheManagerFactory" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
 		<property name="configLocation" value="classpath:ehcache.xml" />
 		<property name="shared" value="true" />
 	</bean>
 
 	<!-- 声明cacheManager -->
-	<bean id="cacheManager"
-		class="org.springframework.cache.ehcache.EhCacheCacheManager">
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
 		<property name="cacheManager">
 			<ref bean="ehcacheManagerFactory" />
 		</property>
@@ -75,8 +65,7 @@
 	</bean>
 
 	<!-- 定义事务管理器 -->
-	<bean id="txManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="pooledDataSource" />
 	</bean>
 	<!-- 定义事务通知 -->
@@ -84,35 +73,24 @@
 		<tx:attributes>
 			<tx:method name="query*" read-only="true" />
 			<tx:method name="get*" read-only="true" />
-			<tx:method name="insert*" propagation="REQUIRED"
-				rollback-for="Exception" />
-			<tx:method name="add*" propagation="REQUIRED"
-				rollback-for="Exception" />
-			<tx:method name="save*" propagation="REQUIRED"
-				rollback-for="Exception" />
-			<tx:method name="update*" propagation="REQUIRED"
-				rollback-for="Exception" />
-			<tx:method name="modify*" propagation="REQUIRED"
-				rollback-for="Exception" />
-			<tx:method name="edit*" propagation="REQUIRED"
-				rollback-for="Exception" />
-			<tx:method name="delete*" propagation="REQUIRED"
-				rollback-for="Exception" />
-			<tx:method name="del*" propagation="REQUIRED"
-				rollback-for="Exception" />
-			<tx:method name="remove*" propagation="REQUIRED"
-				rollback-for="Exception" />
+			<tx:method name="insert*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="add*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="save*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="update*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="modify*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="edit*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="del*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="remove*" propagation="REQUIRED" rollback-for="Exception" />
 			<tx:method name="*" />
 		</tx:attributes>
 	</tx:advice>
 
 	<!-- 使用aop代理进行事务管理（advisor是spring特有的，它持有pointcut和advice） -->
 	<aop:config>
-		<aop:pointcut id="serviceOperation"
-			expression="execution(* 
+		<aop:pointcut id="serviceOperation" expression="execution(* 
 		com.ucan.service..*Impl.*(..))" />
-		<aop:advisor advice-ref="txAdvice"
-			pointcut-ref="serviceOperation" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceOperation" />
 	</aop:config>
 
 </beans>

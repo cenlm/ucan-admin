@@ -85,4 +85,14 @@
        diskPersistent="false"
        diskExpiryThreadIntervalSeconds="600"/>
        
+       <!-- remeberMe: 通过principals查找当前用户的sessionID 缓存 -->
+ <cache name="rememberMeSessionIdCache"
+       maxElementsInMemory="10000"
+       overflowToDisk="true"
+       eternal="true"
+       timeToLiveSeconds="0"
+       timeToIdleSeconds="0"
+       diskPersistent="true"
+       diskExpiryThreadIntervalSeconds="600"/>
+       
 </ehcache>

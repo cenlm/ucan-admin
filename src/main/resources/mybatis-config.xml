@@ -3,6 +3,6 @@
 <configuration>
 	<plugins>
 		<plugin
-			interceptor="com.ucan.interceptors.PageInterceptor"></plugin>
+			interceptor="com.ucan.interceptor.PageInterceptor"></plugin>
 	</plugins>
 </configuration>

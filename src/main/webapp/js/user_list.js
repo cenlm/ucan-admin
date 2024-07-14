@@ -662,6 +662,11 @@ $("#updateOrg input[name='icon']").next().find("div[class='layui-ext-icon-select
 					isEnable: ''
 				},
 				parseData: function(res) { //res 即为原始返回的数据
+				   if(res.code==-1 && res.data == undefined ) {
+				       layer.msg(res.msg, {
+                           icon: 2
+                       });
+				   }
 					return {
 						"code": res.code, //解析接口状态
 						"msg": res.msg, //解析提示文本

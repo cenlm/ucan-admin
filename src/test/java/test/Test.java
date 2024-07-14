@@ -1,11 +1,11 @@
 package test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.ucan.base.exception.CustomException;
-
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.JWTVerifier;
 
 /**
  * @author liming.cen
@@ -98,49 +98,77 @@ public class Test {
 //	System.out.println(json3);
 //	System.out.println("b09cddc4c2929b60e0dc3cb916b7eba953f66ee7d9ffd2c21b1e3d7aff7b2793".length());
 
-	List<String> list1 = new ArrayList<String>();
-	list1.add("1");
-	list1.add("2");
-	list1.add("3");
-	list1.add("5");
-	list1.add("6");
+//	List<String> list1 = new ArrayList<String>();
+//	list1.add("1");
+//	list1.add("2");
+//	list1.add("3");
+//	list1.add("5");
+//	list1.add("6");
+//
+//	List<String> list2 = new ArrayList<String>();
+//	list2.add("2");
+//	list2.add("3");
+//	list2.add("7");
+//	list2.add("8");
+//
+//	// 交集
+//	List<String> intersection = list1.stream().filter(item -> list2.contains(item)).collect(Collectors.toList());
+//	System.out.println("---交集 intersection---");
+//	intersection.parallelStream().forEach(System.out::println);
+//
+//	// 差集 (list1 - list2)
+//	List<String> reduce1 = list1.stream().filter(item -> !list2.contains(item)).collect(Collectors.toList());
+//	System.out.println("---差集 reduce1 (list1 - list2)---");
+//	reduce1.parallelStream().forEach(System.out::println);
+//	System.out.println(msg() + "1111");
+//    }
+//
+//    public static String msg() {
+//	String msg = "";
+//	try {
+//	    System.out.println("结果：" + Test.calculate(0, 1));
+//	} catch (CustomException e) {
+//	    System.out.println("这是捕获到的异常信息：" + e.getMessage());
+//	    msg = e.getMessage();
+//	    e.printStackTrace();
+//	}
+//	return msg;
+//    }
+//
+//    public static int calculate(int a, int b) throws CustomException {
+//	int result = a - b;
+//	if (result < 0) {
+//	    throw new CustomException("计算出错！");
+//	}
+//	return result;
+//    }  
 
-	List<String> list2 = new ArrayList<String>();
-	list2.add("2");
-	list2.add("3");
-	list2.add("7");
-	list2.add("8");
-
-	// 交集
-	List<String> intersection = list1.stream().filter(item -> list2.contains(item)).collect(Collectors.toList());
-	System.out.println("---交集 intersection---");
-	intersection.parallelStream().forEach(System.out::println);
-
-	// 差集 (list1 - list2)
-	List<String> reduce1 = list1.stream().filter(item -> !list2.contains(item)).collect(Collectors.toList());
-	System.out.println("---差集 reduce1 (list1 - list2)---");
-	reduce1.parallelStream().forEach(System.out::println);
-	System.out.println(msg() + "1111");
+	Test test = new Test();
+//	System.out.println(test.getToken());
+	test.verifyToken(
+		"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1Y2FuLWFkbWluIiwiYXVkIjoidWNhbi1hZG1pbi1hcHAiLCJpc3MiOiJhdXRoMCJ9.f9C86NoKVejClvx9Ttmp6TNOv9MYAChUQsTTz-mOQgp");
+	String str="1";
+	System.out.println(str.length());
     }
 
-    public static String msg() {
-	String msg = "";
-	try {
-	    System.out.println("结果：" + Test.calculate(0, 1));
-	} catch (CustomException e) {
-	    System.out.println("这是捕获到的异常信息：" + e.getMessage());
-	    msg = e.getMessage();
-	    e.printStackTrace();
-	}
-	return msg;
+    public String getToken() {
+	Map<String, Object> header = new HashMap<>();
+	header.put("alg", "HS256");
+	header.put("typ", "JWT");
+	Algorithm algorithm = Algorithm.HMAC256("root");
+	String token = JWT.create().withHeader(header).withIssuer("auth0").withSubject("ucan-admin")
+		.withAudience("ucan-admin-app").sign(algorithm);
+	return token;
     }
 
-    public static int calculate(int a, int b) throws CustomException {
-	int result = a - b;
-	if (result < 0) {
-	    throw new CustomException("计算出错！");
-	}
-	return result;
+    public void verifyToken(String token) {
+	Algorithm algorithm = Algorithm.HMAC256("root");
+	Map<String, Object> header = new HashMap<>();
+	header.put("alg", "HS256");
+	header.put("typ", "JWT");
+	JWTVerifier verifier = JWT.require(algorithm).withIssuer("auth0").withSubject("ucan-admin")
+		.withAudience("ucan-admin-app").build();
+	verifier.verify(token);
     }
 
 }
