@@ -11,6 +11,7 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+
 	<!-- 自动发现shiroFilter，具体看org.apache.shiro.spring.web.ShiroFilterFactoryBean中的说明 -->
 	<filter>
 		<filter-name>shiroFilter</filter-name>
@@ -24,6 +25,7 @@
 		<filter-name>shiroFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+
 	<!-- SpringMVC 前端控制器 -->
 	<servlet>
 		<servlet-name>springMVC</servlet-name>
@@ -51,7 +53,7 @@
 		<filter-name>CharacterEncodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-
+	
 	<welcome-file-list>
 		<welcome-file>/WEB-INF/jsp/login.jsp</welcome-file>
 	</welcome-file-list>
@@ -64,8 +66,5 @@
 		<location>/WEB-INF/jsp/error/404.jsp</location>
 	</error-page>
 
-<!-- 	<error-page>
-		<exception-type>UcanExpiredSessionException</exception-type>
-		<location>/WEB-INF/jsp/exception/session_expired.jsp</location>
-	</error-page> -->
+	<!-- <error-page> <exception-type>UcanExpiredSessionException</exception-type> <location>/WEB-INF/jsp/exception/session_expired.jsp</location> </error-page> -->
 </web-app>

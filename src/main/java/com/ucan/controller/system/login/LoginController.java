@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson2.JSON;
+import com.ucan.annotation.XssClean;
 import com.ucan.base.response.Response;
 import com.ucan.entity.User;
 import com.ucan.service.IUserService;
@@ -61,6 +62,7 @@ public class LoginController {
         }
     }
 
+    @XssClean
     @RequestMapping("/login")
     @ResponseBody
     public String login(@RequestParam(name = "username", required = true, defaultValue = "") String username,

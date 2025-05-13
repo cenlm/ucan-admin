@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson2.JSON;
+import com.ucan.annotation.XssClean;
 import com.ucan.base.response.MsgEnum;
 import com.ucan.base.response.Response;
 import com.ucan.entity.Organization;
@@ -52,13 +53,12 @@ public class UserController {
     public String toAddUserPage() {
         return "user/user_list";
     }
-    
+
     @RequestMapping("/user_setting")
     public String toUserSetting() {
         return "user/user_setting";
     }
-
-  
+    @XssClean
     @RequestMapping("/queryUserByPage")
     @ResponseBody
     public String queryUserByPage(User user, @RequestParam(name = "currentPage", defaultValue = "1") String currentPage,
@@ -82,7 +82,7 @@ public class UserController {
      * @param pageSize
      * @return
      */
-    
+    @XssClean
     @RequestMapping("/getUserOrgByPage")
     @ResponseBody
     public String getUserOrgByPage(UserOrganization userOrganization,
@@ -109,6 +109,7 @@ public class UserController {
      * @param pageSize
      * @return
      */
+    @XssClean
     @RequestMapping("/queryUserByOrgIdPage")
     @ResponseBody
     public String queryUserByOrgIdPage(Organization org,
@@ -146,6 +147,7 @@ public class UserController {
      * @param pageSize
      * @return
      */
+    @XssClean
     @RequestMapping("/queryUserByPostIdPage")
     @ResponseBody
     public String queryUserByPostIdPage(Post post, @RequestParam(name = "username", defaultValue = "") String username,
@@ -181,6 +183,7 @@ public class UserController {
      * @return
      * @throws Exception
      */
+    @XssClean
     @RequestMapping("/addUser")
     @ResponseBody
     public String addUser(User user, @RequestParam(name = "postId", defaultValue = "") String postId,
@@ -206,6 +209,7 @@ public class UserController {
         return jsonDataString;
     }
 
+    @XssClean
     @RequestMapping("/updateUser")
     @ResponseBody
     public String updateUser(@RequestBody User user) throws Exception {
@@ -222,6 +226,7 @@ public class UserController {
         return msg;
     }
 
+    @XssClean
     @RequestMapping("/updatePassword")
     @ResponseBody
     public String updatePassword(@RequestParam(name = "userId", required = true) String userId,
@@ -272,7 +277,7 @@ public class UserController {
      * @param user
      * @return
      */
-
+    @XssClean
     @RequestMapping("/updateUserStatus")
     @ResponseBody
     public String updateUserStatus(@RequestBody User user) {
@@ -286,7 +291,7 @@ public class UserController {
         }
         return msg;
     }
-    
+
     @RequestMapping("/delUserById")
     @ResponseBody
     public String delUserById(String userId) {
@@ -330,7 +335,7 @@ public class UserController {
 
         return result;
     }
-   
+
     @RequestMapping("/queryUserById")
     @ResponseBody
     public String queryUserById(String userId) {
@@ -360,8 +365,9 @@ public class UserController {
         }
         return jsonDataString;
     }
-   
+
 //    @RequiresPermissions("document:read")  测试shiro注解是否生效
+    @XssClean
     @RequestMapping("/queryUserDetail")
     @ResponseBody
     public String queryUserDetail(User user) {

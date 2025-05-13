@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson2.JSON;
+import com.ucan.annotation.XssClean;
 import com.ucan.base.response.MsgEnum;
 import com.ucan.base.response.Response;
 import com.ucan.dao.PermissionMapper;
@@ -35,7 +36,7 @@ public class PermissionController {
     public String toAddUserPage() {
 	return "permission/permission_list";
     }
-
+    @XssClean
     @RequestMapping("/getPermissionsByPage")
     @ResponseBody
     public String getPermissionsByPage(Permission permission,
@@ -50,7 +51,7 @@ public class PermissionController {
 	    return JSON.toJSONString(Response.fail("查询失败！"));
 	}
     }
-
+    @XssClean
     @RequestMapping("/addPermission")
     @ResponseBody
     public String addPermission(Permission permission) {
@@ -79,6 +80,7 @@ public class PermissionController {
      * @param user
      * @return
      */
+    @XssClean
     @RequestMapping("/updatePermission")
     @ResponseBody
     public String updatePermission(Permission permission) {

@@ -164,6 +164,8 @@
 	<script src="../js/layui/layui.js"></script>
 	<script src="../js/jquery-3.6.3.min.js"></script>
 	<script src="../js/jquery-migrate-1.2.1.min.js"></script>
+	<script src="../js/xss/purify-3.2.5.min.js"></script>
+    <script src="../js/xss/xss-scanner.js"></script>
 	<script src="../js/user_list.js"></script>
 
 	<!-- 隐藏的表单-查看用户详情、修改用户信息 -->

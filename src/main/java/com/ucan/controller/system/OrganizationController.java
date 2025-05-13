@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson2.JSON;
+import com.ucan.annotation.XssClean;
 import com.ucan.base.response.Response;
 import com.ucan.entity.Organization;
 import com.ucan.entity.tree.response.DTreeResponse;
@@ -95,6 +96,7 @@ public class OrganizationController {
      * @param org
      * @return
      */
+    @XssClean
     @RequestMapping("/addOrganization")
     @ResponseBody
     public String addOrganization(Organization org) {
@@ -121,6 +123,7 @@ public class OrganizationController {
      * @param org
      * @return
      */
+    @XssClean
     @RequestMapping("/deleteOrganization")
     @ResponseBody
     public String deleteOrganization(Organization org) {
@@ -147,6 +150,7 @@ public class OrganizationController {
      * @param org
      * @return
      */
+    @XssClean
     @RequestMapping("/updateOrganization")
     @ResponseBody
     public String updateOrganization(Organization org) {
